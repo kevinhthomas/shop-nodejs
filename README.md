@@ -1,5 +1,7 @@
 # shop-nodejs
-A simple Node.js program using EJS templates. Requires installation of Node.js (For this project, used version 12.14.1)
+A simple Node.js shop using EJS templates and files for storing data. Follows a Udemy tutorial.
+<br/>
+Requires installation of Node.js (For this project, used version 12.14.1)
 <br/>
 To start, in command line, navigate to root directory of project and run:
 <br/>
