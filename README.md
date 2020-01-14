@@ -1,7 +1,7 @@
 # shop-nodejs
-A simple Node.js shop using EJS templates and files for storing data. Follows a Udemy tutorial.
+A simple Node.js shop using EJS templates and files for storing data. Follows a Udemy class.
 <br/>
-Requires installation of Node.js (For this project, used version 12.14.1)
+Requires installation of Node.js (v12.14.1) and MySQL (v8.0.19). Uses Sequelize ORM for DB interaction and EJS for templating.
 <br/>
 To start, in command line, navigate to root directory of project and run:
 <br/>
