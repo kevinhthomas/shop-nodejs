@@ -1,38 +1,42 @@
 <%- include('../includes/intro.ejs') %>
 
 <head>
-    <%- include('../includes/headContent.ejs') %>
-    <link rel="stylesheet" href="/css/cart.css">
+  <%- include('../includes/headContent.ejs') %>
+  <link rel="stylesheet" href="/css/cart.css" />
 </head>
 
 <body>
-    <%- include('../includes/navigation.ejs') %>
+  <%- include('../includes/navigation.ejs') %>
 
-    <main>
-        <% if (products.length > 0) { %>
-            <ul class="cart__item-list">
-                <% products.forEach(p => { %>
-                    <li class="cart__item">
-                        <h1><%= p.title %></h1>
-                        <h2>Quantity: <%= p.cartItem.quantity %></h2>
-                        <form action="/cart-remove-item" method="POST">
-                            <input type="hidden" value="<%= p.id %>" name="productId">
-                            <button class="btn danger" type="submit">Remove</button>
-                        </form>
-                    </li>
+  <main>
+    <% if (products.length > 0) { %>
+    <ul class="cart__item-list">
+      <% products.forEach(p => { %>
+      <li class="cart__item">
+        <h1><%= p.productId.title %></h1>
+        <h2>Quantity: <%= p.quantity %></h2>
+        <form action="/cart-remove-item" method="POST">
+          <input
+            type="hidden"
+            value="<%= p.productId._id %>"
+            name="productId"
+          />
+          <button class="btn danger" type="submit">Remove</button>
+        </form>
+      </li>
 
-                <% }); %>
-            </ul>
-            <hr>
-            <div class="centered">
-                <form action="/create-order" method="POST">
-                    <button type="submit"class="btn">Order!</button>
-                </form>
-            </div>
-        <% } else { %>
-            <h1>No products in cart</h1>
-        <% } %>
-    </main>
+      <% }); %>
+    </ul>
+    <hr />
+    <div class="centered">
+      <form action="/create-order" method="POST">
+        <button type="submit" class="btn">Order!</button>
+      </form>
+    </div>
+    <% } else { %>
+    <h1>No products in cart</h1>
+    <% } %>
+  </main>
 </body>
 
 <%- include('../includes/end.ejs') %>

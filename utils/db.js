@@ -1,5 +1,30 @@
-const { Sequelize } = require('sequelize');
+const mongodb = require("mongodb");
 
-const sequelize = new Sequelize('udemy-shop', 'root', 'lvya', {dialect: 'mysql', host:'localhost'});
+const MongoClient = mongodb.MongoClient;
 
-module.exports = sequelize;
+let _db;
+
+const mongoConnect = cb => {
+  MongoClient.connect(
+    
+  )
+    .then(client => {
+      console.log("Connected!");
+      _db = client.db("shop");
+      cb();
+    })
+    .catch(err => {
+      console.log(err);
+      throw err;
+    });
+};
+
+const getDb = () => {
+  if (_db) {
+    return _db;
+  }
+  throw "No db set up!";
+};
+
+exports.mongoConnect = mongoConnect;
+exports.getDb = getDb;
