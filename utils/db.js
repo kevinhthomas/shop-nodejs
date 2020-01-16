@@ -5,9 +5,7 @@ const MongoClient = mongodb.MongoClient;
 let _db;
 
 const mongoConnect = cb => {
-  MongoClient.connect(
-    
-  )
+  MongoClient.connect()
     .then(client => {
       console.log("Connected!");
       _db = client.db("shop");

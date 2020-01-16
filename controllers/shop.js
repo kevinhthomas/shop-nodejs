@@ -7,7 +7,6 @@ exports.getIndex = (req, res, next) => {
       res.render("shop/index", {
         pageTitle: "Shop Home",
         path: "/",
-        isAuthenticated: req.session.isLoggedIn,
         products: products
       });
     })
@@ -22,7 +21,6 @@ exports.getProducts = (req, res, next) => {
       res.render("shop/products", {
         pageTitle: "Products",
         path: "/",
-        isAuthenticated: req.session.isLoggedIn,
         products: products
       });
     })
@@ -39,7 +37,6 @@ exports.getProduct = (req, res, next) => {
       res.render("shop/product-detail", {
         pageTitle: "Detail View",
         path: "/products",
-        isAuthenticated: req.session.isLoggedIn,
         product: product
       });
     })
@@ -56,7 +53,6 @@ exports.getCart = (req, res, next) => {
       res.render("shop/cart", {
         pageTitle: "Your Cart",
         path: "/cart",
-        isAuthenticated: req.session.isLoggedIn,
         products: user.cart.items
       });
     })
@@ -99,7 +95,6 @@ exports.getOrders = (req, res, next) => {
       res.render("shop/orders", {
         pageTitle: "Your Orders",
         path: "/orders",
-        isAuthenticated: req.session.isLoggedIn,
         orders: orders
       });
     })
@@ -111,8 +106,7 @@ exports.getOrders = (req, res, next) => {
 exports.getCheckout = (req, res, next) => {
   res.render("shop/checkout", {
     pageTitle: "Checkout",
-    path: "/checkout",
-    isAuthenticated: req.session.isLoggedIn
+    path: "/checkout"
   });
 };
 
@@ -127,7 +121,7 @@ exports.postCreateOrder = (req, res, next) => {
 
       const order = new Order({
         user: {
-          name: req.user.name,
+          email: req.user.email,
           userId: req.user._id
         },
         products: products
