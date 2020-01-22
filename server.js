@@ -8,6 +8,7 @@ const csrf = require('csurf');
 const flash = require('connect-flash');
 const config = require('./config/config');
 const error = require('./utils/error');
+const multer = require('multer');
 
 const errorController = require('./controllers/error');
 
@@ -25,15 +26,48 @@ const mongoDBStore = new MongoDBStore({
   collection: 'sessions'
 });
 
+/**
+ * VIEW SETUP
+ */
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 /**
- * MIDDLEWARE
+ * PARSE REQUEST BODY
  */
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
 
+/**
+ *  FILE UPLOADING
+ */
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'images');
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().toISOString().replace(/:/g, '-') + '-' + file.originalname);
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
+
+/**
+ * PUBLIC RESOURCES
+ */
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
+/**
+ * SESSION AND PROTECTION
+ */
 app.use(
   session({
     store: mongoDBStore,
@@ -46,6 +80,9 @@ app.use(
 app.use(csrfProtection);
 app.use(flash());
 
+/**
+ * SET UP USER IN SESSION
+ */
 app.use((req, res, next) => {
   if (!req.session.user) {
     return next();
@@ -65,7 +102,6 @@ app.use((req, res, next) => {
     });
 });
 
-//general vars
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isLoggedIn;
   res.locals.csrfToken = req.csrfToken();
@@ -78,12 +114,15 @@ app.use((req, res, next) => {
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
-
 app.get('/500', errorController.get500);
 app.use('/', errorController.get404);
 
+/**
+ * 500 ERROR HANDLING
+ */
 app.use((error, req, res, next) => {
   //res.status(error.httpStatusCode).render(...)
+  console.log(error);
   res.status(500).render('500', {
     pageTitle: 'Error!',
     path: '/500',
