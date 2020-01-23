@@ -12,9 +12,11 @@ router.get('/products/:productId', shopController.getProduct);
 router.get('/cart', isAuth, shopController.getCart);
 router.post('/cart', isAuth, shopController.postCart);
 router.get('/orders', isAuth, shopController.getOrders);
-// // router.get("/checkout", shopController.getCheckout);
 router.post('/cart-remove-item', isAuth, shopController.postRemoveCartItem);
-router.post('/create-order', isAuth, shopController.postCreateOrder);
+//router.post('/create-order', isAuth, shopController.postCreateOrder);
+router.get('/checkout', isAuth, shopController.getCheckout);
+router.get('/checkout/success', shopController.getCheckoutSuccess);
+router.get('/checkout/cancel', shopController.getCheckout);
 router.get('/orders/:orderId', isAuth, shopController.getInvoice);
 
 module.exports = router;

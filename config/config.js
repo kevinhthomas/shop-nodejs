@@ -7,5 +7,8 @@ module.exports = {
     "mongodb+srv://<USER>:<PASS>@cluster-0-sjmuc.mongodb.net/shop",
   SENDGRID_API_KEY:
     "SENDGRIDAPIKEY"
+  STIPE_API_KEY:
+    "KEY"
+
 };
 */
