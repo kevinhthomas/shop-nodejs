@@ -8,13 +8,30 @@ const Order = require('../models/order');
 
 const error = require('../utils/error');
 
+const ITEMS_PER_PAGE = 1;
+
 exports.getIndex = (req, res, next) => {
+  const page = req.query.page ? +req.query.page : 1; // +req.query.page || 1
+
   Product.find()
+    .countDocuments()
+    .then((count) => {
+      itemCount = count;
+      return Product.find()
+        .skip((page - 1) * ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE);
+    })
     .then((products) => {
       res.render('shop/index', {
         pageTitle: 'Shop Home',
         path: '/',
-        products: products
+        products: products,
+        itemCount: itemCount,
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < itemCount,
+        previousPage: page - 1,
+        nextPage: page + 1,
+        lastPage: Math.ceil(itemCount / ITEMS_PER_PAGE)
       });
     })
     .catch((err) => {
@@ -23,12 +40,27 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
+  const page = req.query.page ? +req.query.page : 1; // +req.query.page || 1
+
   Product.find()
+    .countDocuments()
+    .then((count) => {
+      itemCount = count;
+      return Product.find()
+        .skip((page - 1) * ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE);
+    })
     .then((products) => {
       res.render('shop/products', {
         pageTitle: 'Products',
         path: '/',
-        products: products
+        products: products,
+        itemCount: itemCount,
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < itemCount,
+        previousPage: page - 1,
+        nextPage: page + 1,
+        lastPage: Math.ceil(itemCount / ITEMS_PER_PAGE)
       });
     })
     .catch((err) => {
